@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup-project": "npm i && cd client_FrontEnd && npm i",
+    "dev": "nodemon server.js",
+    "watch": "node --watch server.js"
   },
   "repository": {
     "type": "git",
