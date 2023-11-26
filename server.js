@@ -5,6 +5,7 @@ import express from 'express';
 const app = express();
 
 import morgan from 'morgan';
+import mongoose from 'mongoose';
 
 // custom import
 // routers
@@ -40,6 +41,12 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 3000
 
-app.listen(port, () => {
-  console.log(`listening on port ${port}...`)
-});
+try {
+  await mongoose.connect(process.env.MONGO_URL);
+  app.listen(port, () => {
+    console.log(`listening on port ${port}...`)
+  });
+} catch (error) {
+  console.log(error);
+  process.exit(1);
+};
