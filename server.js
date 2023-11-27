@@ -12,6 +12,9 @@ import mongoose from 'mongoose';
 // routers
 import jobRouter from './routes/jobRouter.js';
 
+// middlewares
+import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
@@ -33,13 +36,7 @@ app.use('*', (req, res) => {
   res.status(404).json({ msg: 'Resources not found' })
 })
 
-app.use((err, req, res, next) => {
-  console.log(err)
-  res.status(500).json({
-    msg: 'something went wrong',
-    error: err.message
-  });
-});
+app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 3000
 
