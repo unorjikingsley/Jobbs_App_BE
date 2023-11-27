@@ -36,7 +36,8 @@ app.use('*', (req, res) => {
 app.use((err, req, res, next) => {
   console.log(err)
   res.status(500).json({
-    msg: 'something went wrong'
+    msg: 'something went wrong',
+    error: err.message
   });
 });
 
@@ -44,10 +45,11 @@ const port = process.env.PORT || 3000
 
 try {
   await mongoose.connect(process.env.MONGO_URL);
+  console.log('mongodb is connected');
   app.listen(port, () => {
     console.log(`listening on port ${port}...`)
   });
 } catch (error) {
-  console.log(error);
+  console.log('MongoDB connection error:', error);
   process.exit(1);
 };
