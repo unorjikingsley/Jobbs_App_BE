@@ -1,6 +1,5 @@
 import Job from '../models/JobModel.js';
 import { StatusCodes } from 'http-status-codes';
-import { NotFoundError } from '../errors/CustomError.js';
 
 export const getAllJobs = async (req, res) => {
   const jobs = await Job.find({})
@@ -27,53 +26,24 @@ export const createJob = async (req, res) => {
 }
 
 export const getJob = async (req, res) => {
-  const { id } = req.params
-  const job = await Job.findById(id);
-  // console.log(job);
-  if (!job) throw new NotFoundError(`Job not found with id: ${id}`);
+  // const { id } = req.params
+  const job = await Job.findById(req.params.id)
+
   res.status(StatusCodes.OK).json({ job })
 }
 
-// export const getJob = async (req, res) => {
-//   const { id } = req.params
-
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(400).json({ msg: 'Invalid ID format' })
-//   }
-
-//   try {
-//     console.log('Attempting to find job by ID:', id)
-//     const job = await Job.findById(id)
-
-//     if (!job) {
-//       console.log('Job not found')
-//       return res.status(404).json({ msg: `No job with id ${id}` })
-//     }
-
-//     console.log('Found job:', job)
-//     res.status(200).json({ job })
-//   } catch (error) {
-//     console.error('Error in getJob:', error)
-//     res.status(500).json({ msg: 'Server error', error: error.message })
-//   }
-// }
-
 export const updateJob = async (req, res) => {
-  const { id } = req.params;
-  const updateJob = await Job.findByIdAndUpdate(id, req.body, {
+  // const { id } = req.params;
+  const updateJob = await Job.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-  });
-
-  if (!updateJob) throw new NotFoundError(`Job ${id} not found`);
+  })
 
   res.status(StatusCodes.OK).json({ msg: 'job modified', job: updateJob });
 }
 
 export const deleteJob = async  (req, res) => {
-  const { id } = req.params
-  const removedJob = await Job.findByIdAndDelete(id);
+  // const { id } = req.params
+  const removedJob = await Job.findByIdAndDelete(req.params.id);
   
-  if (!removedJob) throw new NotFoundError(`Job ${id} not found`);
-
   res.status(StatusCodes.OK).json({ msg: 'job deleted', job: removedJob })
 }

@@ -1,7 +1,8 @@
 import { body, param, validationResult } from 'express-validator';
-import { BadRequestError } from '../errors/CustomError.js';
+import { BadRequestError, NotFoundError } from '../errors/CustomError.js';
 import { JOB_STATUS, JOB_TYPE } from '../utils/contants.js';
 import mongoose from 'mongoose';
+import Job from '../models/JobModel.js';
 
 const withValidationErrors = (validateValues) => {
   return [
@@ -9,11 +10,13 @@ const withValidationErrors = (validateValues) => {
     (req, res, next) => {
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
-        const errorMessages = errors.array().map((error) => error.msg)
-        // return res.status(400).json({ errors: errorMessages })
-        throw new BadRequestError(errorMessages)
+        const errorMessages = errors.array().map((error) => error.msg);
+        if (errorMessages[0].startsWith('Job not')) {
+          throw new NotFoundError(errorMessages);
+        }
+        throw new BadRequestError(errorMessages);
       }
-      next()
+      next();
     },
   ]
 }
@@ -50,7 +53,11 @@ export const validateJobInput = withValidationErrors([
 ]);
 
 export const validateIdParam = withValidationErrors([
-  param('id')
-    .custom((value) => mongoose.Types.ObjectId.isValid(value))
-    .withMessage('invalid MongoDb id'),
+  param('id').custom(async (value) => {
+    const isValidId = mongoose.Types.ObjectId.isValid(value)
+    if(!isValidId) throw new BadRequestError('invalid MongoDB id');
+    const job = await Job.findById(value);
+
+    if (!job) throw new NotFoundError(`Job not found with id: ${value}`);
+  })
 ]);
