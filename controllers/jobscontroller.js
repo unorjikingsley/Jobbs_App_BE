@@ -7,20 +7,6 @@ export const getAllJobs = async (req, res) => {
 };
 
 export const createJob = async (req, res) => {
-  // const { company, position } = req.body;
-  // const job = await Job.create({ company, position });
-
-  // try {
-  //     const job = await Job.create(req.body)
-  //     res.status(200).json({ job })
-  // } catch (error) {
-  //   console.log(error);
-  //   res.status(500).json({ msg: 'server error' });
-  // }
-
-  // we can find async error this manually by using try and catch block which can be
-  // stressful. instead we can use the express-async error handler
-
   const job = await Job.create(req.body)
   res.status(StatusCodes.CREATED).json({ job })
 }
@@ -29,7 +15,7 @@ export const getJob = async (req, res) => {
   // const { id } = req.params
   const job = await Job.findById(req.params.id)
 
-  res.status(StatusCodes.OK).json({ job })
+  res.status(StatusCodes.OK).json({ job });
 }
 
 export const updateJob = async (req, res) => {
