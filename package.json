@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "setup-project": "npm i && cd client_FrontEnd && npm i",
-    "dev": "nodemon server.js",
-    "watch": "node --watch server.js"
+    "server": "nodemon server",
+    "client": "cd client_FrontEnd && npm run dev",
+    "dev": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
   },
   "repository": {
     "type": "git",
