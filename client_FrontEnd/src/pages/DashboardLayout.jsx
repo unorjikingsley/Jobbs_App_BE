@@ -1,13 +1,20 @@
 /* eslint-disable react/prop-types */
-import { Outlet } from "react-router-dom";
+import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import Wrapper from "../assets/wrappers/Dashboard";
 import { BigSidebar, Navbar, SmallSidebar } from "../components";
 import { createContext, useContext, useState } from "react";
 import { checkDefaultTheme } from "../App";
 
+export const loader = () => {
+  return 'Hello World';
+};
+
 const DashboardContext = createContext();
 
 const DashboardLayout = () => {
+  const data = useLoaderData();
+  console.log(data);
+
   // temporary
   const user = { name: 'John' }
   const [showSidebar, setShowSidebar] = useState(false)
