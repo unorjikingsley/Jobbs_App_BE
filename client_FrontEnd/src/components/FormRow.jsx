@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/prop-types
-const FormRow = ({type, name, labelText, defaultValue}) => {
+const FormRow = ({ type, name, labelText, defaultValue }) => {
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
@@ -22,7 +21,7 @@ const FormRow = ({type, name, labelText, defaultValue}) => {
 FormRow.propTypes = {
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  // labelText: PropTypes.string.isRequired,
+  labelText: PropTypes.string,
   defaultValue: PropTypes.string,
 }
 
