@@ -14,15 +14,54 @@ export const loader = async ({ params }) => {
     toast.error(error?.response?.data?.msg)
     return redirect('/dashboard/all-jobs');
   }
-  // return null
 }
+
 export const action = async () => {
   return null
 }
 
 const EditJob = () => {
   const { job } = useLoaderData();
-  console.log(job);
-  return <h1>EditJob</h1>
+  // console.log(job);
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
+
+  return (
+  <Wrapper>
+    <Form method='post' className='form'>
+      <h4 className="form-title">edit job</h4>
+      <div className="form-center">
+        <FormRow type='text' name='position' defaultValue={job.position} />
+        <FormRow type='text' name='company' defaultValue={job.company} />
+        <FormRow
+          type='text'
+          name='jobLocation'
+          labelText='job location'
+          defaultValue={job.jobLocation}
+        />
+
+        <FormRowSelect
+          name='jobStatus'
+          labelText='job status'
+          defaultValue={job.jobStatus}
+          list={Object.values(JOB_STATUS)}
+        />
+        <FormRowSelect
+          name='jobType'
+          labelText='job type'
+          defaultValue={job.jobType}
+          list={Object.values(JOB_TYPE)}
+        />
+
+        <button
+          type='submit'
+          className="btn btn-block form-btn"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'submitting...' : 'submit'}
+        </button>
+      </div>
+    </Form>
+  </Wrapper>)
 }
 export default EditJob
