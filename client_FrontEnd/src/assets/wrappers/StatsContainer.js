@@ -7,8 +7,10 @@ const Wrapper = styled.section`
     grid-template-columns: 1fr 1fr;
     column-gap: 1rem;
   }
+
   @media (min-width: 1120px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 `;
+
 export default Wrapper;
