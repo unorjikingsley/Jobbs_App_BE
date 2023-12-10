@@ -17,17 +17,26 @@ export const getAllJobs = async (req, res) => {
       { position: { $regex: search, $options: 'i' } },
       { company: { $regex: search, $options: 'i' } },
     ]
-  }
+  };
 
   if (jobStatus && jobStatus !== 'all') {
     queryObject.jobStatus = jobStatus
-  }
-  
+  };
+
   if (jobType && jobType !== 'all') {
     queryObject.jobType = jobType
-  }
+  };
 
-  const jobs = await Job.find(queryObject)
+  const sortOptions = {
+    newest: '-createdAt',
+    oldest: 'createdAt',
+    'a-z': 'position',
+    'z-a': '-position',
+  };
+
+  const sortKey = sortOptions[sort] || sortOptions.newest;
+
+  const jobs = await Job.find(queryObject).sort(sortKey);
   res.status(StatusCodes.OK).json({ jobs })
 };
 
