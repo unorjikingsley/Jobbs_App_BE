@@ -10,7 +10,7 @@ day.extend(advancedFormat);
 
 const Job = ({
   // eslint-disable-next-line no-unused-vars
-  _id, position, company, jobLocation, jobTypes, createdAt, jobStatus
+  _id, position, company, jobLocation, jobType, createdAt, jobStatus
 }) => {
   const date = day(createdAt).format('MM DD, YYYY');
 
@@ -28,7 +28,7 @@ const Job = ({
         <div className="content-center">
           <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
           <JobInfo icon={<FaCalendarAlt />} text={date} />
-          <JobInfo icon={<FaBriefcase />} text={jobTypes} />
+          <JobInfo icon={<FaBriefcase />} text={jobType} />
 
           <div className={`status ${jobStatus}`}>{jobStatus}</div>
         </div>
