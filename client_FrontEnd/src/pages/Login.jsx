@@ -55,13 +55,13 @@ const Login = () => {
           type="email"
           name="email"
           labelText="Email"
-          defaultValue="johnking@gmail.com"
+          autoComplete="email"
         />
         <FormRow
           type="password"
           name="password"
           labelText="Password"
-          defaultValue="secret123"
+          autoComplete="current-password"
         />
 
         <SubmitBtn />
@@ -79,6 +79,6 @@ const Login = () => {
       </p>
     </Wrapper>
   )
-}
+};
 
-export default Login
+export default Login;

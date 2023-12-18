@@ -1,4 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// import queries
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   HomeLayout,
   Landing,
@@ -32,7 +35,15 @@ export const checkDefaultTheme = () => {
   return isDarkTheme;
 };
 
-const isDarkThemeEnabled = checkDefaultTheme()
+const isDarkThemeEnabled = checkDefaultTheme();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -98,10 +109,15 @@ const router = createBrowserRouter([
       },
     ],
   },
-])
+]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />;
+      <ReactQueryDevtools InitialIsOpen={false} />;
+    </QueryClientProvider>
+  )
 }
 
 export default App;
