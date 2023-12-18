@@ -1,16 +1,24 @@
 /* eslint-disable react/prop-types */
-import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
+import { Outlet, redirect, useNavigate, useNavigation } from "react-router-dom";
 import Wrapper from "../assets/wrappers/Dashboard";
 import { BigSidebar, Navbar, SmallSidebar, Loading } from "../components";
 import { createContext, useContext, useState } from "react";
-import { checkDefaultTheme } from "../App";
+// import { checkDefaultTheme } from "../App";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 
-export const loader = async () => {
-  try {
+const userQuery = {
+  queryKey: ['user'],
+  queryFn: async () => {
     const { data } = await customFetch.get('/users/current-user');
     return data;
+  }
+}
+
+export const loader = (queryClient) => async () => {
+  try {
+    return await queryClient.ensureQueryData(userQuery);
   } catch (error) {
     return redirect('/');
   }
@@ -18,8 +26,10 @@ export const loader = async () => {
 
 const DashboardContext = createContext();
 
-const DashboardLayout = () => {
-  const { user } = useLoaderData();
+// eslint-disable-next-line no-unused-vars
+const DashboardLayout = ({ isDarkThemeEnabled, queryClient }) => {
+  // const { user } = useLoaderData();
+  const { user } = useQuery(userQuery).data;
 
   const navigate = useNavigate();
 
@@ -27,7 +37,7 @@ const DashboardLayout = () => {
   const isPageLoading = navigation.state === 'loading';
 
   const [showSidebar, setShowSidebar] = useState(false)
-  const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme)
+  const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeEnabled)
 
   const toggleDarkTheme = () => {
     const newDarkTheme = !isDarkTheme
