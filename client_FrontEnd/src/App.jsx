@@ -79,7 +79,7 @@ const router = createBrowserRouter([
           {
             path: 'stats',
             element: <Stats />,
-            loader: StatsLoader,
+            loader: StatsLoader(queryClient),
             errorElement: <ErrorElement />,
           },
           {
