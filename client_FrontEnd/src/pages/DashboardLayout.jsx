@@ -54,6 +54,9 @@ const DashboardLayout = ({ isDarkThemeEnabled, queryClient }) => {
   const logoutUser = async () => {
     navigate('/');
     await customFetch.get('/auth/logout');
+
+    queryClient.invalidateQueries();
+
     toast.success('Logging out...')
   }
 
