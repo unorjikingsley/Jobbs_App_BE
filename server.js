@@ -56,13 +56,13 @@ app.use('/api/v1/jobs', authenticateUser, jobRouter);
 app.use('/api/v1/users', authenticateUser, userRouter);
 app.use('/api/v1/auth', authRouter);
 
-app.use('*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './client_FrontEnd/dist', 'index.html'));
-})
+});
 
 app.use('*', (req, res) => {
   res.status(404).json({ msg: 'Resources not found' })
-})
+});
 
 app.use(errorHandlerMiddleware);
 
