@@ -41,7 +41,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-}
+};
 
 // app.use(express.static(path.resolve(__dirname, './public')))
 app.use(express.static(path.resolve(__dirname, './client_FrontEnd/dist')))
@@ -56,7 +56,7 @@ app.use('/api/v1/jobs', authenticateUser, jobRouter);
 app.use('/api/v1/users', authenticateUser, userRouter);
 app.use('/api/v1/auth', authRouter);
 
-app.get('*', (req, res) => {
+app.use('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './client_FrontEnd/dist', 'index.html'));
 })
 
