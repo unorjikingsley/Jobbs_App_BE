@@ -24,12 +24,12 @@ const Wrapper = styled.section`
     font-size: 1.25rem;
     color: var(--primary-500);
     border-radius: var(--border-radius);
-    cursor:pointer:
+    cursor: pointer;
   }
 
   .active{
     background:var(--primary-500);
-        color: var(--white);
+    color: var(--white);
   }
 
   .prev-btn,.next-btn{

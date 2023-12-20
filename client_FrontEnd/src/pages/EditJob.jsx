@@ -5,23 +5,36 @@ import { JOB_STATUS, JOB_TYPE } from '../../../utils/contants.js';
 import { Form, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import customFetch from '../utils/customFetch';
+import { useQuery } from '@tanstack/react-query';
 
-export const loader = async ({ params }) => {
+const singleJobQuery = (id) => {
+  return {
+    queryKey: ['jobs', id],
+    queryFn: async () => {
+      const { data } = await customFetch.get(`/jobs/${id}`)
+      return data;
+    },
+  }
+}
+
+export const loader = (queryClient) => async ({ params }) => {
   try {
-    const { data } = await customFetch.get(`/jobs/${params.id}`)
-    return data
+    await queryClient.ensureQueryData(singleJobQuery(params.id))
+    return params.id;
   } catch (error) {
     toast.error(error?.response?.data?.msg)
     return redirect('/dashboard/all-jobs');
   }
 }
 
-export const action = async ({ request, params }) => {
+export const action = (queryClient) => async ({ request, params }) => {
   const formData = await request.formData()
   const data = Object.fromEntries(formData)
 
   try {
-    await customFetch.patch(`/jobs/${params.id}`, data)
+    await customFetch.patch(`/jobs/${params.id}`, data);
+    queryClient.invalidateQueries(['jobs']);
+
     toast.success('Job edited successfully')
     return redirect('/dashboard/all-jobs')
   } catch (error) {
@@ -31,10 +44,11 @@ export const action = async ({ request, params }) => {
 }
 
 const EditJob = () => {
-  const { job } = useLoaderData();
-  // console.log(job);
-  // const navigation = useNavigation();
-  // const isSubmitting = navigation.state === 'submitting';
+  const id = useLoaderData();
+
+  const {
+    data: { job },
+  } = useQuery(singleJobQuery(id))
 
   return (
     <Wrapper>

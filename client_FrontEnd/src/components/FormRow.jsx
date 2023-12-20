@@ -14,10 +14,11 @@ const FormRow = ({ type, name, labelText, defaultValue, onChange }) => {
         className="form-input"
         defaultValue={defaultValue || ''}
         onChange={onChange}
+        autoComplete={type === 'password' ? 'current-password' : 'on'}
         required
       />
     </div>
-  );
+  )
 }
 
 // FormRow.propTypes = {
